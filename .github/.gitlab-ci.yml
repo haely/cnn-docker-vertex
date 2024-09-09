@@ -1,0 +1,20 @@
+stages:
+  - build
+  - deploy
+
+build_image:
+  stage: build
+  script:
+    - docker build -t your-docker-image .
+
+deploy_to_production:
+  stage: deploy
+  script:
+    - docker run \
+        -e VAULT_URL="$VAULT_URL" \
+        -e VAULT_TOKEN="$VAULT_TOKEN" \
+        -e VAULT_SECRET_PATH="$VAULT_SECRET_PATH" \
+        your-docker-image
+  only:
+    - main
+# haely to do - whihc works>

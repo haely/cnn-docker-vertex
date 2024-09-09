@@ -1,0 +1,65 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run tests
+      run: |
+        # Add commands to run your tests here
+        echo "Running tests..."
+
+    - name: Build Docker image
+      run: |
+        docker build -t my-docker-image:latest .
+
+    - name: Login to Google Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: gcr.io
+        username: _json_key
+        password: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+    - name: Push Docker image
+      run: |
+        docker tag my-docker-image:latest gcr.io/your-project-id/my-docker-image:latest
+        docker push gcr.io/your-project-id/my-docker-image:latest
+
+    - name: Deploy
+      env:
+        VAULT_URL: ${{ secrets.VAULT_URL }}
+        VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
+        VAULT_SECRET_PATH: ${{ secrets.VAULT_SECRET_PATH }}
+      run: |
+        # Fetch GCP credentials from Vault and save to a temporary file
+        curl --header "X-Vault-Token: $VAULT_TOKEN" \
+             $VAULT_URL/v1/$VAULT_SECRET_PATH \
+             | jq -r '.data' > /tmp/gcs_credentials.json
+
+        # Set the GOOGLE_APPLICATION_CREDENTIALS environment variable
+        export GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcs_credentials.json
+
+        # Add deployment commands here
+        echo "Deploying application..."
+
+# haely todo update all paths

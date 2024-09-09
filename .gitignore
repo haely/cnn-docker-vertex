@@ -1,0 +1,48 @@
+# Python-specific files
+*.pyc
+*.pyo
+__pycache__/
+*.pyd
+*.sqlite3
+*.db
+
+# Virtual environment
+venv/
+env/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Docker files
+*.log
+*.tmp
+Dockerfile
+docker-compose.yml
+
+# Build and coverage
+build/
+dist/
+*.egg-info/
+*.coverage
+.coverage
+*.cover
+*.py,cover
+
+# PyCharm IDE
+.idea/
+
+# VS Code IDE
+.vscode/
+
+# Google Cloud SDK credentials
+gcs_credentials.json
+
+# Vault secrets
+*.vault
+
+# GitHub Actions
+.github/workflows/*.yml
+
+# Environment variables
+.env
+

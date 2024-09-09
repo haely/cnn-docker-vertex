@@ -1,0 +1,22 @@
+# Model Hyperparameters
+model:
+  num_classes: 21
+  num_keypoints: 17
+  input_channels: 3
+
+# Training Hyperparameters
+training:
+  batch_size: 16
+  epochs: 30
+  learning_rate: 0.001
+
+# Data Paths
+data:
+  train_data_gcs: gs://my-bucket/folder1
+  val_data_gcs: gs://my-bucket/folder2       # do we need gs:// here?
+
+# Checkpoints and Logs
+output:
+  checkpoints_dir: /app/outputs/checkpoints
+  logs_dir: /app/outputs/logs
+

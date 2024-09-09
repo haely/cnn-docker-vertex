@@ -1,0 +1,13 @@
+# Ignore local environment files or system-specific files
+*.pyc
+__pycache__/
+*.pkl
+.vscode/
+.idea/
+.env
+*.log
+
+# Ignore virtual environments
+venv/
+env/
+
